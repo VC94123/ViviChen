@@ -1,0 +1,646 @@
+USE wedding_database;
+
+/* ### INTRO ###
+Team 1 - Vision Board 8 (The Bohemian Bloom)
+
+Vision Board Analysis
+
+Based on the qualitative analysis we developed as a team, it was clear that our 
+clients would like to pursue a Boho-themed wedding party. The couple would like to 
+establish trendy and bold aesthetics that connect a comfortable, cozy experience with 
+nature. There is extensive usage of natural décor elements based on flowers, fruits, and 
+leaves. 
+
+The concepts suggest strong clients’ preferences towards monochromatic 
+features with effortless yet free-spirited and cute designs.
+All of the presented concepts by clients display a strong use of a Fruity Color 
+Palette that is vibrant and sweet: peach, coral, salmon, mustard, and orange. Our 
+team assumes that the selected color elements are a must-have characteristic of the 
+wedding and they are not willing to pivot to other options.
+
+Another important aspect of our clients’ wedding party is the connection with 
+nature. Based on observed elements including tents, gardens, and the backyard 
+photoshoot, we infer that the couple would like to pursue a wedding party in an outdoor 
+venue.
+
+Based on the provided elements, we tried to find vendors for each product category
+that encompassed the essential elements of the Bohemian Bloom Wedding Theme:
+
+1- Boho-themed.
+2- Nature-inspired (Flowers, Fruits, and Leaves).
+3- Cozy and comfortable.
+4- Proximity with nature (Outdoor venue that is prepared for possible weather adversities).
+5- Fruity, vibrant, and sweet color palette (Peach, Salmon, Coral, Mustard, Orange, and Pink).
+
+We also created 2 new categories: budget and wedding size.
+We are assuming that a wedding is:
+1- SMALL if it has 50 guests;
+2- MEDIUM if it has 100 guests;
+3- LARGE if it has 200 guests;
+This assumptions are based on our secondary research and insights found on TheKnot Wedding Analysis (https://www.theknot.com/content/average-wedding-guest-list-size).
+
+For BUDGET, we calculated the price ranges of each product + category combination and we are assuming that services with higher prices are more top-tier (e.g.
+a more expensive venue is more luxurious than a cheaper venue). ALL services need to meet our minimum requirements per wedding and per department.
+*/
+
+/* 
+### 1. FLOWERS ###
+1- We chose flower products that come from Summer/Spring seasons that would encompass vibrant colors based on
+clients' preferred color palette.
+2- We also chose flower styles that are Romantic, Natural, and Classic based on requirements: Romantic, Glamorous, Modern,
+Classic, Warm, Preppy, and Elegant.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_flowers_temp;
+CREATE TEMPORARY TABLE vendors_flowers_temp AS
+SELECT v.vendor_id, vendor_name, vendor_location,vendor_rating, vendor_website, 
+       p.product_id,product_name, flower_season, flower_style, price_unit, unit_vol
+FROM vendors AS v
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+INNER JOIN flower_season_style AS f
+ON p.product_id = f.product_id
+WHERE vendor_depart = 'flowers'
+AND flower_season IN ('spring', 'summer')
+AND flower_style IN ('romantic', 'glamorous', 'modern', 'classic', 'warm', 'preppy', 'elegant');
+
+SELECT *
+FROM vendors_flowers_temp;
+
+
+
+/*
+#### 2. CATERING ####
+1- Our clients would like to pursue a Buffet Service, enabling the possibility of guests to access unlimited, continous food and beverage services.
+2- We also decided to quality catering vendors that provide Food Stations and Bar Services, that are among our clients' top priorities.
+3- Based on the provided sample on catering elements, we infered that our clients would like to pursue a food type based on French or Mediterranean cuisine.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_catering_temp;
+CREATE TEMPORARY TABLE vendors_catering_temp AS
+SELECT v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+p.product_id, product_name, price_unit, unit_vol,
+french, mediterranean,
+gluten_free, lactose_free, kosher, halal, nut_free, organic, vegan, vegetarian
+FROM vendors AS v
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+INNER JOIN cuisine AS c
+ON p.product_id = c.product_id
+INNER JOIN dietary_option AS d
+ON p.product_id = d.product_id
+WHERE vendor_depart = 'catering'
+AND c.french = 1
+AND c.mediterranean = 1
+AND product_name IN ('buffet service','food stations','bar service');
+
+SELECT *
+FROM vendors_catering_temp;
+
+
+
+/*
+#### 3.1 DRESS & ATTIRE (DRESS) ####
+1- Based on the concept provided by our clients, it is clear that the bride wishes a specific type of dress for her wedding party.
+2- We understand that the dress is the most important thing to a woman during her wedding day, so we decided to follow her directions strictly.
+3- By analyzing the dress picture, the silhouette shape is not clear so we decided to go with similar options: a-line, trumpet, or mermaid style.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendor_dress_temp1;
+CREATE TEMPORARY TABLE vendor_dress_temp1 AS 
+SELECT     v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+           p.product_id, product_name, price_unit, unit_vol,
+           silhouette,
+           neckline,
+           sleeve,
+           fabric
+FROM vendors AS v
+INNER JOIN products  AS p
+        ON v.vendor_id = p.vendor_id
+INNER JOIN dress AS d 
+        ON p.product_id = d.product_id
+WHERE vendor_depart = 'dress and attire'
+AND silhouette IN ('a-line','trumpet','mermaid')
+AND neckline = 'sweetheart'
+AND sleeve = 'without sleeve'
+AND fabric = 'lace';
+
+SELECT *
+FROM vendor_dress_temp1;
+
+
+/*
+#### 3.2 DRESS & ATTIRE (DRESS) ####
+1- Secondary query if we were to expand our criteria and just focus on the main feature of the wedding dress: the fabric (lace).
+*/
+DROP TEMPORARY TABLE IF EXISTS vendor_dress_temp2;
+CREATE TEMPORARY TABLE vendor_dress_temp2 AS 
+SELECT v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+	   p.product_id, product_name, price_unit, unit_vol,
+	   silhouette,
+	   neckline,
+	   sleeve,
+	   fabric
+FROM vendors AS v
+INNER JOIN products  AS p
+        ON v.vendor_id = p.vendor_id
+INNER JOIN dress AS d 
+        ON p.product_id = d.product_id
+WHERE vendor_depart = 'dress and attire'
+AND fabric = 'lace';
+
+SELECT *
+FROM vendor_dress_temp2;
+
+
+
+/*
+#### 3.3 DRESS & ATTIRE (SUIT) ####
+1- Based on the concept provided, it is clear that the groom would like to go for a color that is more similar to the proposed color palette.
+2- Since we don't have a peach or pink tone for the suit, we would suggest a light blue since that is the only light color we have in our database.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendor_attire_temp1;
+CREATE TEMPORARY TABLE vendor_attire_temp1 AS
+SELECT v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+	   p.product_id, product_name, price_unit, unit_vol,
+	   color,
+	   number_of_buttons,
+	   lapel_style
+FROM vendors AS v
+INNER JOIN products  AS p
+        ON v.vendor_id = p.vendor_id
+INNER JOIN attire AS a
+        ON p.product_id = a.product_id
+WHERE vendor_depart = 'dress and attire'
+AND color = 'light blue';
+
+SELECT *
+FROM vendor_attire_temp1;
+
+/*
+#### 3.4 DRESS & ATTIRE (SUIT) ####
+1- Secondary query to expand our criteria: this is a query that only encompasses suits and tuxedos which possess a notch lapel style.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendor_attire_temp2;
+CREATE TEMPORARY TABLE vendor_attire_temp2 AS
+SELECT v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+	   p.product_id, product_name, price_unit, unit_vol,
+	   color,
+	   number_of_buttons,
+	   lapel_style
+FROM vendors AS v
+INNER JOIN products  AS p
+        ON v.vendor_id = p.vendor_id
+INNER JOIN attire AS a
+        ON p.product_id = a.product_id
+WHERE vendor_depart = 'dress and attire'
+AND lapel_style = 'notch';
+
+SELECT *
+FROM vendor_attire_temp2;
+
+
+/*
+#### 4. RENTALS ####
+1- There are currently no additional info for Rental products. So we are considering all vendors in our analysis.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_rentals_temp;
+CREATE TEMPORARY TABLE vendors_rentals_temp AS
+SELECT v.vendor_id, vendor_depart, vendor_name, vendor_location, vendor_rating, vendor_website, 
+p.product_id, product_name,price_unit, unit_vol
+FROM vendors AS v
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+WHERE vendor_depart = 'rental';
+
+SELECT *
+FROM vendors_rentals_temp;
+
+
+/*
+#### 5. HAIR & MAKEUP ####
+1- Our client would like to pursue a simple yet classic hair and makeup combination. We are only selecting vendors who are able to deliver these services.
+2- Products must me either traditional or simple.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_hair_temp;
+CREATE TEMPORARY TABLE vendors_hair_temp AS
+SELECT  v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+        p.product_id, product_name, price_unit, unit_vol
+FROM vendors as v 
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+WHERE vendor_depart = 'hair and makeup'
+AND product_name IN ('traditional', 'simple')
+AND unit_vol IN ('1 per bride', '1 per bride trial','1 per traditional') ;
+
+SELECT *
+FROM vendors_hair_temp;
+
+/*
+#### 6. INVITATIONS ####
+1- We are suggesting invitation products types that are aligned with the concept provided in the visionboard: something simpler that conveys elegance
+and proximity to nature.
+2- The types that meet these criteria are: recycled, matte text weight, signature, premium, and standard.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendor_invitation_temp;
+CREATE TEMPORARY TABLE vendor_invitation_temp AS
+SELECT v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+	   p.product_id, product_name, price_unit, unit_vol,
+	   product_category,
+	   product_type
+FROM vendors AS v
+INNER JOIN products  AS p
+        ON v.vendor_id = p.vendor_id
+INNER JOIN inv_characteristics AS i
+        ON p.vendor_id = i.vendor_id
+WHERE vendor_depart = 'invitations'
+AND product_type IN ('Recycled','Matte text weight','Signature','Premium','Standard');
+
+SELECT *
+FROM vendor_invitation_temp;
+
+
+/*
+#### 7 JEWELRY ####
+1- According to our clients, they would like to pursue Jewelry but in their conditions: something that is classic but also down-to-earth.
+2- Based on their preferences, we are working with all types of jewelry that are either gold or silver (no shiny and different gemstones, let's keep it classic!).
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_jewelry_bride_temp;
+CREATE TEMPORARY TABLE vendors_jewelry_bride_temp AS
+SELECT v.vendor_id, vendor_depart, vendor_name, vendor_location, vendor_rating, vendor_website,
+p.product_id, product_name, product_description, material_name, category_name, price_unit, unit_vol
+FROM vendors AS v
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+INNER JOIN material as m
+ON p.product_id = m.product_id
+INNER JOIN categories AS c
+ON p.product_id = c.product_id
+INNER JOIN product_description AS p2
+ON p.product_id = p2.product_id
+WHERE vendor_depart = 'jewelry'
+AND material_name IN ('gold', 'silver')
+AND category_name IN ('ring', 'necklace', 'bracelet');
+
+SELECT *
+FROM vendors_jewelry_bride_temp;
+
+
+/*
+#### 8 MUSIC ####
+1- Our clients would like something romantic and chillish, and that is something our DJs can accomplish!
+2- We are selecting only DJs with good ratings - at least a 4.7 score.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_music_temp;
+CREATE TEMPORARY TABLE vendors_music_temp AS
+SELECT  v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+        p.product_id, product_name, price_unit, unit_vol,RATINGS
+FROM vendors as v 
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+INNER JOIN Popularity as pop
+ON v.vendor_id = pop.vendor_id
+WHERE vendor_depart = 'music'
+AND RATINGS >= 4.7;
+
+SELECT *
+FROM vendors_music_temp;
+
+
+/*
+#### 9 PHOTO & VIDEO ####
+1- Since Photo & Video was not a high priority to our customers, we are keeping it classic: regular photo and video services for the event.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendor_photo_video_temp;
+CREATE TEMPORARY TABLE vendor_photo_video_temp AS
+SELECT v.vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+	   p.product_id, product_name, price_unit, unit_vol
+FROM vendors AS v
+INNER JOIN products  AS p
+        ON v.vendor_id = p.vendor_id
+WHERE vendor_depart = 'photo and video'
+AND product_name LIKE 'photo and video';
+
+SELECT *
+FROM vendor_photo_video_temp;
+
+/*
+#### 10 VENUES ####
+1- We are selecting venues that can accomodate all types of individuals: they must provide easy access to people with disabilities and they must be
+protected against weather adversities.
+2- We decided to go only with outdoor venues per strict request from our clients: they want to feel connected to the nature.
+3- All venues in the list have protection against wind and rain.
+*/
+DROP TEMPORARY TABLE IF EXISTS vendors_venues_temp;
+CREATE TEMPORARY TABLE vendors_venues_temp AS
+SELECT DISTINCT v.vendor_id, vendor_depart, vendor_name, vendor_location, vendor_rating, vendor_website, 
+p.product_id, product_name, price_unit, unit_vol,
+ven_ceremony_area, ven_dress_room, ven_handicap_access, ven_outdoor, ven_liability_ins, ven_covered_outd,
+ven_accommodation,ven_type,ven_set1,ven_set2,ven_set3,ven_set4,ven_set5
+FROM vendors AS v
+INNER JOIN products AS p
+ON v.vendor_id = p.vendor_id
+INNER JOIN ven_amenities AS v2
+ON p.product_id = v2.product_id
+INNER JOIN ven_ceremonies AS v3
+ON p.product_id = v2.product_id
+INNER JOIN ven_settings AS v4
+ON p.product_id = v4.product_id
+WHERE vendor_depart = 'venues'
+AND ven_ceremony_area = 1
+AND ven_dress_room = 1
+AND ven_handicap_access = 1
+AND ven_outdoor = 1
+AND ven_liability_ins = 1
+AND ven_covered_outd = 1
+AND ven_accommodation = 1
+AND ven_set4 != 'mountain';
+
+SELECT *
+FROM vendors_venues_temp;
+
+
+/* Create one temporary table for all vendors using UNION function (to make sure no duplicate data) */
+DROP TEMPORARY TABLE IF EXISTS temp_vendors;
+CREATE TEMPORARY TABLE temp_vendors AS
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       flower_season,flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve,NULL AS fabric,-- dress
+       NULL AS color,NULL AS number_of_buttons,NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendors_flowers_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+	   NULL AS flower_season,NULL AS flower_style,-- flowers
+	   french, mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve,NULL AS fabric,-- dress
+       NULL AS color,NULL AS number_of_buttons,NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendors_catering_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   silhouette, neckline, sleeve, fabric,-- dress
+       NULL AS color,NULL AS number_of_buttons,NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendor_dress_temp1
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   silhouette, neckline, sleeve, fabric,-- dress
+       NULL AS color,NULL AS number_of_buttons,NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendor_dress_temp2
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering 
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       color, number_of_buttons, lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendor_attire_temp1
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       color, number_of_buttons, lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendor_attire_temp2
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendors_rentals_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendors_hair_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       product_category, product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendor_invitation_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       product_description, material_name, category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendors_jewelry_bride_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendors_music_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       NULL AS ven_ceremony_area, NULL AS ven_dress_room, NULL AS ven_handicap_access, 
+       NULL AS ven_outdoor, NULL AS ven_liability_ins, NULL AS ven_covered_outd,
+       NULL AS ven_accommodation -- venues
+FROM vendor_photo_video_temp
+UNION
+SELECT vendor_id, vendor_name, vendor_location, vendor_rating, vendor_website, 
+       product_id, product_name, price_unit,
+       unit_vol,-- same colums
+       NULL AS flower_season,NULL AS flower_style,-- flowers
+	   NULL AS french, NULL AS mediterranean,-- catering
+	   NULL AS silhouette, NULL AS neckline, NULL AS sleeve, NULL AS fabric,-- dress
+       NULL AS color, NULL AS number_of_buttons, NULL AS lapel_style, -- attire
+       NULL AS product_category,NULL AS product_type, -- invitation
+       NULL AS product_description, NULL AS material_name, NULL AS category_name, -- jewerly
+       NULL AS RATINGS, -- music
+       ven_ceremony_area, ven_dress_room, ven_handicap_access, 
+       ven_outdoor, ven_liability_ins, ven_covered_outd,
+       ven_accommodation -- venues
+FROM vendors_venues_temp;
+
+/* To see the result of temp_vendors */
+SELECT *
+FROM temp_vendors;
+
+/* Create the budget_level based on the Products & Vendors Tables */
+DROP TEMPORARY TABLE IF EXISTS budget_level_label;
+CREATE TEMPORARY TABLE budget_level_label AS 
+WITH PriceRanking AS (
+    SELECT p.product_id, p.product_name, p.vendor_id, p.price_unit, v.vendor_depart,
+        PERCENT_RANK() OVER (
+            PARTITION BY v.vendor_depart, 
+            CASE
+			 WHEN v.vendor_depart IN ('flowers', 'catering', 'rental', 'hair and makeup', 'photo and video') THEN p.product_name 
+             WHEN v.vendor_depart = 'jewelry' THEN c.category_name
+			 ELSE NULL
+            END
+            ORDER BY p.price_unit
+        ) AS price_percentile
+    FROM Products AS p
+    JOIN Vendors AS v ON p.vendor_id = v.vendor_id
+    LEFT JOIN categories AS c ON p.product_id = c.product_id
+)
+
+SELECT product_id, product_name, vendor_id, price_unit, vendor_depart,
+CASE
+	WHEN price_percentile <= 0.25 THEN 1
+	WHEN price_percentile <= 0.50 THEN 2
+	WHEN price_percentile <= 0.75 THEN 3
+	ELSE 4
+    END AS price_label
+FROM PriceRanking
+ORDER BY vendor_depart, product_name, price_unit;
+
+
+/* To verify that the price categorization is done by product type in the jewelry department.*/ 
+SELECT t.*, b.*
+FROM temp_vendors as t
+INNER JOIN budget_level_label AS b
+ON t.product_id = b.product_id
+LEFT JOIN categories as c
+ON t.product_id = c.product_id
+WHERE b.vendor_depart = 'jewelry'
+AND c.category_name = 'ring'
+ORDER BY t.price_unit;
+
+/*To use the table with all the products and their respective price categorizations.*/
+SELECT *
+FROM budget_level_label;
+
+/* To use the filtered table temp_vendors in combination with the price categorization tags. */
+SELECT t.*, b.*
+FROM temp_vendors as t
+INNER JOIN budget_level_label AS b
+ON t.product_id = b.product_id;
+
+SELECT t.vendor_id, b.vendor_depart, min(t.price_unit), max(t.price_unit), min(b.price_label) as price_label_min,
+CASE WHEN min(b.price_label) = 1 THEN 1 ELSE 0 END AS budget_inexpensive,
+CASE WHEN min(b.price_label) IN (1,2) THEN 1 ELSE 0 END AS budget_affordable,
+CASE WHEN min(b.price_label) IN (1,2,3) THEN 1 ELSE 0 END AS budget_moderate,
+CASE WHEN min(b.price_label) IN (1,2,3,4) THEN 1 ELSE 0 END AS budget_luxury,
+1 AS wedding_size_small,
+1 AS wedding_size_medium,
+1 AS wedding_size_large
+FROM temp_vendors as t
+INNER JOIN budget_level_label AS b
+ON t.product_id = b.product_id
+GROUP BY t.vendor_id, b.vendor_depart;
+
+/* Create relevant vendors table with the wedding size & buget level with Boolean */
+DROP TEMPORARY TABLE IF EXISTS relevant_vendor;
+CREATE TEMPORARY TABLE relevant_vendor AS
+SELECT t.vendor_id, b.vendor_depart, min(t.price_unit), max(t.price_unit), min(b.price_label) as price_label,
+CASE WHEN min(b.price_label) = 1 THEN 1 ELSE 0 END AS budget_inexpensive,
+CASE WHEN min(b.price_label) IN (1,2) THEN 1 ELSE 0 END AS budget_affordable,
+CASE WHEN min(b.price_label) IN (1,2,3) THEN 1 ELSE 0 END AS budget_moderate,
+CASE WHEN min(b.price_label) IN (1,2,3,4) THEN 1 ELSE 0 END AS budget_luxury,
+1 AS wedding_size_small,
+1 AS wedding_size_medium,
+1 AS wedding_size_large
+FROM temp_vendors as t
+INNER JOIN budget_level_label AS b
+ON t.product_id = b.product_id
+GROUP BY t.vendor_id, b.vendor_depart;
+
+SELECT * FROM relevant_vendor;
+
+
+
+

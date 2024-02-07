@@ -1,0 +1,393 @@
+/* ### INTRO ###
+For this part of the project, our team aimed to calculate 12 different types of proposals based on clients' requirements and budget/wedding size
+constraints. We used the best alternatives for each department based on:
+
+1- Price Analysis.
+2- Qualitative Research on Vendors' Quality and Deliverables
+3- Proximity to the 'Bohemian Bloom' Theme.
+4- Priorities from our clients (e.g. Flowers are high priority while Music is low priority).
+
+For the values we defined for each vendors, we aim to serve a wedding from 3 different sizes based on our assumptions and research:
+1- SMALL (50 people)
+2- MEDIUM (100 people)
+3- LARGE (200 people)
+
+Some of these items quantity will not change based on the size (e.g. wedding dress). However, wedding size will have a direct impact on other items quantity (e.g.
+flowers, invitations, catering services, etc.). We added a few extra quantities (~~10% of wedding size) to support extraordinary events such as:
+1- People who showed up that were not in the original list of guests.
+2- Broken glassware/dineware.
+3- Broken tables.
+
+We would like to offer 12 different options that can accomodate our clients' best day of their lives: THE BOHEMIAN BLOOM!
+
+*/
+
+DROP TEMPORARY TABLE IF EXISTS temp_combinations;
+CREATE TEMPORARY TABLE temp_combinations (
+    wedding_size VARCHAR(255),
+    budget_level VARCHAR(255),
+    vendor_name VARCHAR(255),
+    product_id VARCHAR(255),
+    vendor_id VARCHAR(255),
+    quantity INT
+);
+
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'leal vineyards', 'prod_003', 'ven_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'leal vineyards', 'prod_003', 'ven_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'half moon bay golf links', 'prod_049', 'ven_49', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'leal vineyards', 'prod_003', 'ven_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'thistledown designs', 'prod_198', 'flo_15', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'eventscapes inc', 'prod_184', 'flo_02', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'niche and nook flowers', 'prod_196', 'flo_13', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'floret design', 'prod_192', 'flo_09', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'flowers of the valley', 'prod_184', 'flo_01', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'eventscapes inc', 'prod_184', 'flo_02', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'niche and nook flowers', 'prod_196', 'flo_13', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'floret design', 'prod_192', 'flo_09', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'flowers of the valley', 'prod_184', 'flo_01', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'eventscapes inc', 'prod_184', 'flo_02', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'niche and nook flowers', 'prod_196', 'flo_13', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'floret design', 'prod_192', 'flo_09', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'flowers of the valley', 'prod_184', 'flo_01', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'franks garden florist', 'prod_204', 'flo_21', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'franks garden florist', 'prod_204', 'flo_21', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'rosies and posies florist', 'prod_220', 'flo_37', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'rosies and posies florist', 'prod_220', 'flo_37', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'franks garden florist', 'prod_204', 'flo_21', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'franks garden florist', 'prod_204', 'flo_21', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'rosies and posies florist', 'prod_220', 'flo_37', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'rosies and posies florist', 'prod_220', 'flo_37', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'franks garden florist', 'prod_204', 'flo_21', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'franks garden florist', 'prod_204', 'flo_21', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'rosies and posies florist', 'prod_220', 'flo_37', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'rosies and posies florist', 'prod_220', 'flo_37', 4);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'not just flowers', 'prod_200', 'flo_17', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'not just flowers', 'prod_200', 'flo_17', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'silks are forever', 'prod_209', 'flo_26', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'expressions floral', 'prod_190', 'flo_07', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'not just flowers', 'prod_200', 'flo_17', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'not just flowers', 'prod_200', 'flo_17', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'silks are forever', 'prod_209', 'flo_26', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'expressions floral', 'prod_190', 'flo_07', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'not just flowers', 'prod_200', 'flo_17', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'not just flowers', 'prod_200', 'flo_17', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'silks are forever', 'prod_209', 'flo_26', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'expressions floral', 'prod_190', 'flo_07', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'fleurish ca', 'prod_219', 'flo_36', 50);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'fleurish ca', 'prod_219', 'flo_36', 50);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'le fleur d', 'prod_212', 'flo_29', 50);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'le fleur d', 'prod_212', 'flo_29', 50);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'fleurish ca', 'prod_219', 'flo_36', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'fleurish ca', 'prod_219', 'flo_36', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'le fleur d', 'prod_212', 'flo_29', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'le fleur d', 'prod_212', 'flo_29', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'fleurish ca', 'prod_219', 'flo_36', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'fleurish ca', 'prod_219', 'flo_36', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'le fleur d', 'prod_212', 'flo_29', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'le fleur d', 'prod_212', 'flo_29', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'absolute elegance floral', 'prod_205', 'flo_22', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'absolute elegance floral', 'prod_205', 'flo_22', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'mandy scott events', 'prod_203', 'flo_20', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'mandy scott events', 'prod_203', 'flo_20', 100);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'absolute elegance floral', 'prod_205', 'flo_22', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'absolute elegance floral', 'prod_205', 'flo_22', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'mandy scott events', 'prod_203', 'flo_20', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'mandy scott events', 'prod_203', 'flo_20', 200);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'absolute elegance floral', 'prod_205', 'flo_22', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'absolute elegance floral', 'prod_205', 'flo_22', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'mandy scott events', 'prod_203', 'flo_20', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'mandy scott events', 'prod_203', 'flo_20', 400);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'altana marie', 'prod_108', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'brilliant earth', 'prod_093', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'altana marie', 'prod_101', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'sausolito jewelers', 'prod_110', 'jwl_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'altana marie', 'prod_108', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'brilliant earth', 'prod_093', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'altana marie', 'prod_101', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'sausolito jewelers', 'prod_110', 'jwl_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'altana marie', 'prod_108', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'brilliant earth', 'prod_093', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'altana marie', 'prod_101', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'sausolito jewelers', 'prod_110', 'jwl_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'brilliant earth', 'prod_086', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'brilliant earth', 'prod_090', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'altana marie', 'prod_109', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'sausolito jewelers', 'prod_121', 'jwl_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'brilliant earth', 'prod_086', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'brilliant earth', 'prod_090', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'altana marie', 'prod_109', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'sausolito jewelers', 'prod_121', 'jwl_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'brilliant earth', 'prod_086', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'brilliant earth', 'prod_090', 'jwl_01', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'altana marie', 'prod_109', 'jwl_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'sausolito jewelers', 'prod_121', 'jwl_03', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'allure bridal', 'prod_826', 'att_02', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'blacktux', 'prod_844', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'blacktux', 'prod_853', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'blacktux', 'prod_854', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'atelier munro', 'prod_842', 'att_15', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'blacktux', 'prod_844', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'blacktux', 'prod_853', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'blacktux', 'prod_854', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'atelier munro', 'prod_842', 'att_15', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'blacktux', 'prod_844', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'blacktux', 'prod_853', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'blacktux', 'prod_854', 'att_17', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'atelier munro', 'prod_842', 'att_15', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'fire 4 hire catering', 'prod_250', 'cat_16', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'fogcutter', 'prod_254', 'cat_23', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'melons catering and events', 'prod_256', 'cat_25', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'stock and bones', 'prod_268', 'cat_50', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'fire 4 hire catering', 'prod_250', 'cat_16', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'fogcutter', 'prod_254', 'cat_23', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'melons catering and events', 'prod_256', 'cat_25', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'stock and bones', 'prod_268', 'cat_50', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'fire 4 hire catering', 'prod_250', 'cat_16', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'fogcutter', 'prod_254', 'cat_23', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'melons catering and events', 'prod_256', 'cat_25', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'stock and bones', 'prod_268', 'cat_50', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'fire 4 hire catering', 'prod_271', 'cat_16', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'blue heron catering inc', 'prod_273', 'cat_21', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'carrie dove catering and events', 'prod_287', 'cat_46', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'stock and bones', 'prod_288', 'cat_50', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'fire 4 hire catering', 'prod_271', 'cat_16', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'blue heron catering inc', 'prod_273', 'cat_21', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'carrie dove catering and events', 'prod_287', 'cat_46', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'stock and bones', 'prod_288', 'cat_50', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'fire 4 hire catering', 'prod_271', 'cat_16', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'blue heron catering inc', 'prod_273', 'cat_21', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'carrie dove catering and events', 'prod_287', 'cat_46', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'stock and bones', 'prod_288', 'cat_50', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'theknot', 'prod_153', 'inv_23', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'theknot', 'prod_153', 'inv_23', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'theknot', 'prod_153', 'inv_23', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'theknot', 'prod_153', 'inv_23', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'theknot', 'prod_153', 'inv_23', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'etsy', 'prod_162', 'inv_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'etsy', 'prod_162', 'inv_29', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'etsy', 'prod_162', 'inv_29', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'etsy', 'prod_162', 'inv_29', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'etsy', 'prod_162', 'inv_29', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'coffee n cream press', 'prod_144', 'inv_11', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'coffee n cream press', 'prod_144', 'inv_11', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'coffee n cream press', 'prod_144', 'inv_11', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'coffee n cream press', 'prod_144', 'inv_11', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'coffee n cream press', 'prod_144', 'inv_11', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'paperculture', 'prod_172', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'paperculture', 'prod_172', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'paperculture', 'prod_172', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'paperculture', 'prod_172', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'paperculture', 'prod_172', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'paperculture', 'prod_174', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'paperculture', 'prod_174', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'paperculture', 'prod_174', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'paperculture', 'prod_174', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'paperculture', 'prod_174', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'paperculture', 'prod_168', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'paperculture', 'prod_168', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'paperculture', 'prod_168', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'paperculture', 'prod_168', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'paperculture', 'prod_168', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'paperculture', 'prod_177', 'inv_44', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'paperculture', 'prod_177', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'paperculture', 'prod_177', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'paperculture', 'prod_177', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'paperculture', 'prod_177', 'inv_44', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'george street photo and video', 'prod_388', 'vid_25', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'lucky devils creative', 'prod_398', 'vid_35', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'jennifer mihalyi photography', 'prod_401', 'vid_38', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'silver seas', 'prod_367', 'vid_04', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'george street photo and video', 'prod_388', 'vid_25', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'lucky devils creative', 'prod_398', 'vid_35', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'jennifer mihalyi photography', 'prod_401', 'vid_38', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'silver seas', 'prod_367', 'vid_04', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'george street photo and video', 'prod_388', 'vid_25', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'lucky devils creative', 'prod_398', 'vid_35', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'jennifer mihalyi photography', 'prod_401', 'vid_38', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'silver seas', 'prod_367', 'vid_04', 2);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'dj alex reyes entertainment', 'prod_330', 'dj_06', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'premier dj service', 'prod_340', 'dj_27', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'dj johny', 'prod_347', 'dj_20', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'shining city music ent', 'prod_355', 'dj_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'dj alex reyes entertainment', 'prod_330', 'dj_06', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'premier dj service', 'prod_340', 'dj_27', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'dj johny', 'prod_347', 'dj_20', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'shining city music ent', 'prod_355', 'dj_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'dj alex reyes entertainment', 'prod_330', 'dj_06', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'premier dj service', 'prod_340', 'dj_27', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'dj johny', 'prod_347', 'dj_20', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'shining city music ent', 'prod_355', 'dj_29', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'beauty by jasmine yin', 'prod_660', 'hmu_21', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'bfab bridal wedding hairstylist makeup artist', 'prod_446', 'hmu_03', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'primadonnamakeover hair  makeup  lipstick mix bar', 'prod_610', 'hmu_16', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'stylebee', 'prod_430', 'hmu_02', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'beauty by jasmine yin', 'prod_660', 'hmu_21', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'bfab bridal wedding hairstylist makeup artist', 'prod_446', 'hmu_03', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'moderne beauty', 'prod_610', 'hmu_17', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'stylebee', 'prod_430', 'hmu_02', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'beauty by jasmine yin', 'prod_660', 'hmu_21', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'bfab bridal wedding hairstylist makeup artist', 'prod_446', 'hmu_03', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'primadonnamakeover hair  makeup  lipstick mix bar', 'prod_610', 'hmu_16', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'stylebee', 'prod_430', 'hmu_02', 8);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'rsvp decor', 'prod_060', 'ren_19', 1);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'g n event rental inc', 'prod_080', 'ren_11', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'stuart rental', 'prod_083', 'ren_21', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'chairs for affairs', 'prod_082', 'ren_09', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'chairs for affairs', 'prod_082', 'ren_09', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'g n event rental inc', 'prod_080', 'ren_11', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'stuart rental', 'prod_083', 'ren_21', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'chairs for affairs', 'prod_082', 'ren_09', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'chairs for affairs', 'prod_082', 'ren_09', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'g n event rental inc', 'prod_080', 'ren_11', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'stuart rental', 'prod_083', 'ren_21', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'chairs for affairs', 'prod_082', 'ren_09', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'chairs for affairs', 'prod_082', 'ren_09', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'fine linen creations', 'prod_065', 'ren_10', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'fine linen creations', 'prod_065', 'ren_10', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'celebrations of marin', 'prod_062', 'ren_08', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'sweet little details', 'prod_063', 'ren_22', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'fine linen creations', 'prod_065', 'ren_10', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'fine linen creations', 'prod_065', 'ren_10', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'celebrations of marin', 'prod_062', 'ren_08', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'sweet little details', 'prod_063', 'ren_22', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'fine linen creations', 'prod_065', 'ren_10', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'fine linen creations', 'prod_065', 'ren_10', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'celebrations of marin', 'prod_062', 'ren_08', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'sweet little details', 'prod_063', 'ren_22', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'pleasanton rentals inc', 'prod_066', 'ren_17', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'abbey party rents sf', 'prod_067', 'ren_02', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'abbey party rents sf', 'prod_067', 'ren_02', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'bright events rentals', 'prod_068', 'ren_07', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'pleasanton rentals inc', 'prod_066', 'ren_17', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'abbey party rents sf', 'prod_067', 'ren_02', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'abbey party rents sf', 'prod_067', 'ren_02', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'bright events rentals', 'prod_068', 'ren_07', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'pleasanton rentals inc', 'prod_066', 'ren_17', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'abbey party rents sf', 'prod_067', 'ren_02', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'abbey party rents sf', 'prod_067', 'ren_02', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'bright events rentals', 'prod_068', 'ren_07', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'nan', 'nan', 'nan', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'piedmont party rentals', 'prod_054', 'ren_16', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'hensley event resources', 'prod_052', 'ren_13', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'hensley event resources', 'prod_052', 'ren_13', 55);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'nan', 'nan', 'nan', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'piedmont party rentals', 'prod_054', 'ren_16', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'hensley event resources', 'prod_052', 'ren_13', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'hensley event resources', 'prod_052', 'ren_13', 110);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'nan', 'nan', 'nan', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'piedmont party rentals', 'prod_054', 'ren_16', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'hensley event resources', 'prod_052', 'ren_13', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'hensley event resources', 'prod_052', 'ren_13', 220);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'inexpensive', 'g n event rental inc', 'prod_077', 'ren_11', 6);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'affordable', 'good events', 'prod_072', 'ren_12', 6);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'moderate', 'special events rental', 'prod_076', 'ren_20', 6);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('small', 'luxury', 'lux event rentals and design', 'prod_078', 'ren_15', 6);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'inexpensive', 'g n event rental inc', 'prod_077', 'ren_11', 11);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'affordable', 'good events', 'prod_072', 'ren_12', 11);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'moderate', 'special events rental', 'prod_076', 'ren_20', 11);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('medium', 'luxury', 'lux event rentals and design', 'prod_078', 'ren_15', 11);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'inexpensive', 'g n event rental inc', 'prod_077', 'ren_11', 21);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'affordable', 'good events', 'prod_072', 'ren_12', 21);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'moderate', 'special events rental', 'prod_076', 'ren_20', 21);
+INSERT INTO temp_combinations (wedding_size, budget_level, vendor_name, product_id, vendor_id, quantity) VALUES ('large', 'luxury', 'lux event rentals and design', 'prod_078', 'ren_15', 21);
+
+DROP TEMPORARY TABLE IF EXISTS vendor_options;
+CREATE TEMPORARY TABLE vendor_options AS
+SELECT wedding_size, budget_level, round(SUM(price_unit * quantity),2) AS est_cost, 'BOHO' AS wedding_theme
+FROM temp_combinations as t
+LEFT JOIN products as p
+ON t.product_id = p.product_id
+GROUP BY wedding_size, budget_level
+ORDER BY est_cost asc;
+
+SELECT * FROM vendor_options;
