@@ -26,7 +26,7 @@ And evaluate its performance based on accuracy, specificity, and sensitivity.
 Finally, the logistic regression model is utilized to forecast churn among new customers using the NewCustomerDataset.
 This project details my methodology, from data preprocessing to the application of logistic regression for predictive analysis.
 
-5. Project Overview: World Bank Data Analysis- Life Expectancy vs. Fertility Rate-
+5. Project Overview: World Bank Data Analysis Life Expectancy vs. Fertility Rate-
 This project examines the relationship between Life Expectancy and Fertility Rate across various world regions for the years 1960 and 2020.
 Utilizing R for data processing and scatterplot visualizations, the analysis seeks to identify trends and changes in these demographic indicators over the sixty-year span.
 The visual comparisons between the two periods aim to shed light on global demographic trends and their implications for health and development strategies.
