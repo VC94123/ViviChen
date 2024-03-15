@@ -4,7 +4,6 @@ Analysis Framework: Sets the stage by defining 'sustainable practices' and 'cost
 SQL and Dataset Preparation: Employs SQL for data exploration and preparation, setting up a robust dataset for in-depth Python analysis.
 Python Data Science: Utilizes Python for statistical analysis and data visualization, such as scatterplots and boxplots, to uncover patterns and insights.
 Actionable Insights: Offers practical, actionable insights backed by credible sources to enhance sustainability and cost-effectiveness for wedding vendors.
-Documentation: Delivers findings through professional documentation in a Jupyter Notebook and HTML page, alongside SQL scripts, making the analysis accessible to a wide audience.
 
 2. Project Overview: Group Assignment Wedding Cost Breakdown Analysis-
 This project showcases our group project on analyzing wedding expenses, where I focused on data exploration and analysis.
